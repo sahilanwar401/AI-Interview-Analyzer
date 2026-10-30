@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
 export const generateInterviewReport = async ({ jobDescription, selfDescription, resumeFile }) => {

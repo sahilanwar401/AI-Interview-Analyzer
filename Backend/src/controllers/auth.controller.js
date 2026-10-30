@@ -3,6 +3,14 @@ import jwt from "jsonwebtoken";
 import userModel from "../models/user.model.js";
 import tokenBlackListModel from "../models/blacklist.model.js";
 import mongoose from "mongoose";
+const isProd = process.env.NODE_ENV === "production";
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? "none" : "lax",
+  maxAge: 24 * 60 * 60 * 1000, // 1 din (JWT bhi 1d ka hai)
+};
 
 async function registerUserController(req, res) {
   const { username, email, password } = req.body;
@@ -34,7 +42,7 @@ async function registerUserController(req, res) {
     { expiresIn: "1d" }
   );
 
-  res.cookie("token", token);
+  res.cookie("token", token, cookieOptions);
 
   res.status(201).json({
     message: "user register successfully ",
@@ -51,6 +59,9 @@ async function registerUserController(req, res) {
  */
 async function loginUserController(req, res) {
   const { email, password } = req.body;
+    if (!email || !password) {
+    return res.status(400).json({ message: "Please provide email and password" });
+  }
   const user = await userModel.findOne({ email });
 
   if (!user) {
@@ -69,7 +80,7 @@ async function loginUserController(req, res) {
     process.env.JWT_SECRET,
     { expiresIn: "1d" }
   );
-  res.cookie("token", token);
+  res.cookie("token", token, cookieOptions);
   res.status(200).json({
     message: "User loggedIn successfully",
     user: {
@@ -88,7 +99,11 @@ async function logoutUserController(req,res) {
     if(token){
         await tokenBlackListModel.create({token})
     }
-    res.clearCookie("token")
+    res.clearCookie("token", {
+  httpOnly: true,
+  secure: isProd,
+  sameSite: isProd ? "none" : "lax",
+});
     res.status(200).json({
         message:"user logout successfully"
     })

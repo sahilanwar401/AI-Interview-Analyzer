@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from  "cors"
 import interviewRouter from "./routes/interview.routes.js";
 const app = express();
+app.set("trust proxy", 1);
 app.use(cookieParser())
 app.use(express.json()  )
 app.use(cors({

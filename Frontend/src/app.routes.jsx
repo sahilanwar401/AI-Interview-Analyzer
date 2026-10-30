@@ -1,0 +1,32 @@
+import {createBrowserRouter} from "react-router"
+import Login from "./Features/auth/pages/Login.jsx"
+import Register from "./Features/auth/pages/Register.jsx"
+import Protected from "./Features/auth/components/Protected.jsx"
+import Home from "./Features/interview/pages/Home.jsx"
+import Interview from "./Features/interview/pages/Interview.jsx"
+import Landing from "./Features/auth/pages/Landing.jsx"
+
+
+export const router = createBrowserRouter([ 
+    {
+        path:"/login",
+        element:<Login/>
+    },
+     {
+        path:"/register",
+        element:<Register/>
+    },
+    {
+        path:"/app",
+        element:<Protected><Home/></Protected>
+
+    },
+    {
+        path:"/interview/:interviewId",
+        element:<Protected><Interview/></Protected>
+    },
+    {
+        path:"/",
+        element:<Landing/>
+    }
+])

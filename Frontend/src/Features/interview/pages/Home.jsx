@@ -136,7 +136,7 @@ if (!selfDescription.trim()) {
                 id="selfDescription"
                 required
                 onChange={(e)=>setSelfDescription(e.target.value)}
-                placeholder="Briefly describe your experience, key skills, and years of experience if you don't have a resume handy..."
+                placeholder="Briefly describe your experience, key skills, and years of experience "
                 className="h-20 w-full resize-none rounded-[10px] border border-[#2b2b31] bg-[#121214] px-3 py-2.5 text-sm text-[#ececf0] placeholder:text-[#5f5f6b] transition hover:border-[#3a3a42] focus:border-[#ff2d6f] focus:outline-none focus:ring-[3px] focus:ring-[#ff2d6f]/20"
               ></textarea>
             </div>

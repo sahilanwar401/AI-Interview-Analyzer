@@ -7,13 +7,17 @@ const app = express();
 app.set("trust proxy", 1);
 app.use(cookieParser())
 app.use(express.json()  )
-app.use(cors({
+app.use(
+  cors({
     origin: [
-        "http://localhost:5173",
-        "https://ai-interview-analyzer-jade.vercel.app"
+      "http://localhost:5173",
+      "https://ai-interview-analyzer-jade.vercel.app",
     ],
-    credentials: true
-}))
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  })
+);
 /**using authentication related routes here      */
 app.use("/api/auth",authRouter)
 app.use("/api/interview",interviewRouter) 

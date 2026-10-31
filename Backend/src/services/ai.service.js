@@ -48,7 +48,7 @@ delete jsonSchema.$schema; // Gemini ko ye key nahi chahiye
 // console.log("Schema keys:", Object.keys(jsonSchema.properties || {}));
 
 // ---------- Retry + fallback ----------
-const MODELS = ["gemini-3.8-flash", "gemini-2.5-flash"]; // pehla busy ho to doosra
+const MODELS = ["gemini-3.8-flash", "gemini-3.6-flash"]; // pehla busy ho to doosra
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function callGemini(prompt) {
@@ -65,10 +65,14 @@ async function callGemini(prompt) {
             responseJsonSchema: jsonSchema,
           },
         });
-      } catch (err) {
+           } catch (err) {
         lastError = err;
+        console.log(
+          `${model} error, attempt ${attempt}/3:`,
+          err.status,
+          String(err.message).slice(0, 300)
+        );
         if (err.status !== 503 && err.status !== 429) throw err;
-        console.log(`${model} busy, attempt ${attempt}/3`);
         await sleep(attempt * 2000);
       }
     }
@@ -82,7 +86,7 @@ async function generateInterviewReport({ resume, selfDescription, jobDescription
 Generate an interview report for the candidate below.
 
 Rules:
--- title: short job title taken from the job description, e.g. "Full Stack Developer".
+- title: short job title taken from the job description, e.g. "Full Stack Developer".
 - matchScore: integer 0 to 100.
 - technicalQuestions: 5 objects, each with "question", "intention", "answer".
 - behavioralQuestions: 3 objects, each with "question", "intention", "answer".

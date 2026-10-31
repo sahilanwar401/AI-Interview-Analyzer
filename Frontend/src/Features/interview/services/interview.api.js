@@ -50,7 +50,7 @@ export const generateInterviewReport = async ({
 
   try {
     const response = await api.post("/api/interview/", formData, {
-      timeout: 120000,
+      timeout: 300000,
     });
 
     toast.success("Report generated successfully");
